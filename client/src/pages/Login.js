@@ -7,11 +7,44 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-const Login = () => {
+const Login = (props) => {
 
   const inputPhone=useRef();
-  // const [phone,setPhone] = useState();
+  const [verificationPage,setVerificationPage] =useState(false)
+  const [otp, setOtp] = useState('');
+
+
 const navigate =useNavigate()
+
+async function sendOtpHandler(){
+ const phone=inputPhone.current.state.formattedNumber;
+console.log("phone otp send",phone)
+  try{
+
+    const res= await fetch(`http://localhost:4008/sendotp`,{
+          method:'POST',
+          body:JSON.stringify({phone:phone}),
+          headers:{
+            'Content-Type':'application/json'
+          }
+    });
+
+    if(res.status!==200){
+      ///toast.error(res.statusText)
+     throw new Error(res.statusText)
+  
+     }
+    
+    console.log("data send otp",res);
+    props.verificationPageHandler(phone)
+    toast.success("OTP Sent");
+    
+  navigate('/user/verify')
+  }catch(err){
+    toast.error(err.message)
+  }
+}
+
 const signInHandler=async(e)=>{
   e.preventDefault();
 
@@ -26,22 +59,16 @@ const signInHandler=async(e)=>{
           'Content-Type':'application/json'
         }
   });
-// if(res.status===400){
-//   console.log("reslogin",res)
-
-//   toast.error(res.statusText);
-//   throw new Error(res.statusText)
-// }
-
-  // toast.success("Login Successfully")
+ 
  if(res.status!=200){
   console.log("datalogin",res);
-  toast.success(res.statusText);
+ // toast.error(res.statusText);
   throw new Error(res.statusText)
  }
 
  toast.success("Login Successfully");
-navigate('/user/verify')
+ sendOtpHandler();
+
   }catch(err){
     toast.error(err.message);
   }
@@ -52,7 +79,7 @@ navigate('/user/verify')
 <>
 <section>
 
-  <div className='m-auto sm:1/4  md:w-1/4 lg:w-1/4  my-10 justify-center text-center text-gray-600 shadow-md p-5'>
+  <div className='m-auto w-80 my-10 justify-center text-center text-gray-600 shadow-md p-5'>
       <div className=''>
           <h1 className='text-4xl text-sky-500 font-serif'>Admit<span className='text-black'>Kard</span></h1>
           <h3 className='text-xl text-black mt-8'>Welcome to Signup Page</h3>
@@ -84,7 +111,7 @@ navigate('/user/verify')
       </div> </form>
     
   </div>
-<ToastContainer/>
+<ToastContainer autoClose={2000}/>
 </section>
 
 </>

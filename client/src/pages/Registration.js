@@ -62,7 +62,7 @@ catch(err){
 }
   return (
     <section>
-      <div className='m-auto sm:1/4  md:w-1/4 lg:w-1/4 my-10 justify-center text-center text-gray-600 shadow-md p-5'>
+      <div className='m-auto w-80 my-10 justify-center text-center text-gray-600 shadow-md p-5'>
       <div className='w-full'>
           <h1 className='w-full justify-center text-center inline-block text-4xl text-sky-500 font-serif'>Admit<span className='text-black'>Kard</span></h1>
           <h3 className='text-xl text-black mt-8'>Welcome Back</h3>

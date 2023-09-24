@@ -3,22 +3,30 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Registration from './pages/Registration';
 import Verification from './pages/Verification';
-import Header from './components/Header';
-import Error from './pages/Error';
 import { Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 
 function App() {
+
+  const [verificationPage,setVerificationPage]=useState(false);
+  const [loginNum,setLoginNum]=useState('')
+
+  const verificationPageHandler=(data)=>{
+    console.log("dataapp page",data)
+    setLoginNum(data);
+    // setVerificationPage(e=>!e);
+  }
+ 
+
   return (
   <>
-<Header/>
+
 
 <Routes>
-
-  <Route path='/' element={<Login/>}/>
-  <Route path='/register' element={<Registration/>}/>
-  <Route path='/user/verify' element={<Verification/>}/>
+ <Route path='/' element={<Login verificationPageHandler={verificationPageHandler}/>}/>
+  <Route path='/register' element={<Registration />}/>
+  <Route path='/user/verify' element={<Verification loginNum={loginNum}/>}/>
   <Route path='/dashboard' element={<Dashboard/>}/>
-  <Route path='*' element={<Error/>}/>
 
 </Routes>
   </>
